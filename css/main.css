@@ -676,6 +676,12 @@ input[type=radio]:checked + .review-mark-label {
   left: 50px;
 }
 
+.setup-wizard .wizard-coat,
+.setup-wizard .wizard-eyes,
+.setup-fireball-wrap {
+  cursor: pointer;
+}
+
 .setup-fireball-wrap {
   position: absolute;
   left: 300px;
