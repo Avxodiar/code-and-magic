@@ -587,8 +587,15 @@ input[type=radio]:checked + .review-mark-label {
   box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.5);
 }
 
+.setup-moving {
+  height: 20px;
+  background-color: rgba(0,0,0,0.05);
+  cursor: pointer;
+}
+
 .setup-title {
   padding: 20px;
+  padding-top: 0;
 }
 
 .setup-user {
@@ -644,7 +651,7 @@ input[type=radio]:checked + .review-mark-label {
   color: #000;
   cursor: pointer;
 
-  transform: translateY(-0.3em);
+  transform: translateY(-0.2em);
 }
 
 .setup-artifacts-shop {
@@ -863,7 +870,7 @@ input[type=radio]:checked + .review-mark-label {
 
   position: absolute;
   left: 0;
-  top: 0;
+  top: 10px;
 }
 
 .upload input {
