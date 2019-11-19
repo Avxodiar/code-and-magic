@@ -5,9 +5,6 @@
 // кнопка Настройки
 var buttonSetup = document.querySelector('.setup-open');
 
-// форма Настройки
-var setupForm = document.querySelector('.setup-wizard-form');
-
 //блок Настройки
 var setup = document.querySelector('.setup');
 var setupUserName = document.querySelector('.setup-user-name');
@@ -34,6 +31,24 @@ setupUserName.addEventListener('input', function(evt) {
   var mess  = (evt.target.value.length < 2 ) ? window.utils.getValidyMess('tooShort') : '';
   evt.target.setCustomValidity( mess );
 });
+
+// форма Настройки
+var setupForm = document.querySelector('.setup-wizard-form');
+
+//Отправка формы Настройка без перезагрузки страницы
+setupForm.addEventListener('submit', function(evt) {
+  window.backend.save(
+    new FormData(setupForm),
+    function(response) {
+      evtCloseSetup();
+    },
+    function(errorMessage) {
+      alert('Ошибка записи данных!\n' + errorMessage);
+    }
+  );
+  evt.preventDefault();
+});
+
 
 /**
  * Показ окна Настройки
@@ -84,7 +99,6 @@ function evtFormSubmitEnterPress(evt) {
     if ( evt.target == setupUserName ) {
       evt.preventDefault();
     }
-    else  alert('submit');
   }
 }
 
@@ -94,11 +108,11 @@ function evtWizardColorChange(evt) {
   var wizardProp = '';
   var targetClass = evt.target.classList;
   if( targetClass.contains("wizard-coat") ) {
-    wizardProp = "coatColor";
+    wizardProp = "colorCoat";
   } else if( targetClass.contains("wizard-eyes") ) {
-    wizardProp = "yeysColor";
+    wizardProp = "colorEyes";
   } else if( targetClass.contains("setup-fireball") ) {
-    wizardProp = "fireballColor";
+    wizardProp = "colorFireball";
   }
   if( window.wizards.getPersonParam(wizardProp) ) {
     changeWizardPropColor(evt, wizardProp);
@@ -114,20 +128,20 @@ function changeWizardPropColor(evt, wizardProp) {
   colorId++;
   colorId = ( colorId < wizardParams.length ) ? colorId : 0 ;
   evt.target.dataset.colorId = colorId;
-  if (wizardProp == "fireballColor") {
+  if (wizardProp == "colorFireball") {
     evt.target.parentNode.style.background = wizardParams[colorId];
   } else {
     evt.target.style.fill = wizardParams[colorId];
   }
   var hiddenInputName;
   switch(wizardProp) {
-    case 'coatColor':
+    case 'colorCoat':
       hiddenInputName = "coat-color";
       break;
-    case 'yeysColor':
+    case 'colorEyes':
       hiddenInputName = "eyes-color";
       break;
-    case 'fireballColor':
+    case 'colorFireball':
       hiddenInputName = "fireball-color";
       break;
   }
