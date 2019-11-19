@@ -11,6 +11,10 @@ body {
 
   background: #da641a;
 }
+html {
+  overflow: -moz-scrollbars-vertical;
+  overflow-y: scroll;
+}
 
 h1,
 h2 {
@@ -569,6 +573,7 @@ input[type=radio]:checked + .review-mark-label {
   box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.25);
   box-sizing: border-box;
   color: #000;
+  outline: 1px solid rgba(0,0,0,0.2);
 
   z-index: 3;
 }
@@ -583,8 +588,9 @@ input[type=radio]:checked + .review-mark-label {
   z-index: 2;
 }
 
-.setup-open-icon:hover {
-  box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.5);
+.setup-open-icon:hover,
+.setup-open-icon:focus {
+  box-shadow: 0px 0px 4px 4px rgba(0, 0, 0, 0.6);
 }
 
 .setup-moving {
@@ -619,6 +625,8 @@ input[type=radio]:checked + .review-mark-label {
 .setup-user-name {
   background: transparent;
   border: 0;
+  border-bottom: solid 1px rgba(255, 255, 255, 0.3);
+  padding: 2px 2px 2px 5px;
   color: #fff;
 
   font-family: 'PT Mono', serif;
@@ -629,16 +637,18 @@ input[type=radio]:checked + .review-mark-label {
 }
 
 .setup-user-name:valid {
-  border: 0;
+  border-bottom: solid 1px rgba(255, 255, 255, 0.5);
+}
+
+.setup-user-name:focus {
+  border-bottom: solid 1px #3F51B5;
+  background: #7b91e3;
+  box-shadow: none;
+  outline: none;
 }
 
 .setup-user-name:invalid {
   border: 2px solid red;
-}
-
-.setup-user-name:focus {
-  border-bottom: solid 1px #000;
-  outline: none;
 }
 
 .setup-close {
@@ -648,10 +658,11 @@ input[type=radio]:checked + .review-mark-label {
   right: 20px;
 
   font-size: 70px;
+  line-height: 40px;
   color: #000;
   cursor: pointer;
 
-  transform: translateY(-0.2em);
+  transform: translateY(0.1em);
 }
 
 .setup-artifacts-shop {

@@ -1,15 +1,6 @@
 'use strict';
 
-// шаблон для генерации параметров персонажей
-var persons = {
-  name:   ['Дворкин', 'Мелькор', 'Гэндальф',        'Саруман',      'Зеддикус',      'Ричард', 'Кэлен',  'Кара',   'Рейстлин', 'Рам',   'Гассан',     'Джонатан',  'Борис',  'Артур',   'Волан',   'Альбус',   'Гарри'],
-  family: ['Баримен', 'Ба́углир', 'Митрандир Серый', 'Курумо Белый', 'З’ул Зорандер', 'Рал',    'Амнелл', 'Мейсон', 'Маджере',  'Аббал', 'ибн Хоттаб', 'Стрэндж',   'Гессер', 'Завулон', 'де-Морт', 'Дамблдор', 'Поттер' ],
-  coatColor: ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'],
-  yeysColor: ['black', 'brown', 'red', 'blue', 'yellow', 'green'],
-  fireballColor: ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848']
-};
-var KEY_ENTER = 13;
-var KEY_ESC = 27;
+( function() {
 
 // кнопка Настройки
 var buttonSetup = document.querySelector('.setup-open');
@@ -28,48 +19,28 @@ var wizardTemplate = document.querySelector("#similar-wizard-template").content;
 var setupWizard = setup.querySelector('.setup-wizard');
 var setupFireball = setup.querySelector('.setup-fireball-wrap');
 
-var VALIDY_STATE = {
-  valueMissing: 'Не заполнено обязательное поле',
-  tooShort: 'Имя должно состоять минимум из 2-х символов',
-  tooLong: 'Имя не должно превышать 25-ти символов',
-  badInput: 'Введено неправильное значение',
-}
-
-createWizardList();
-
 buttonSetup.addEventListener('click', evtShowSetup );
 buttonSetup.addEventListener('keydown', evtShowSetupEnterPress );
 
 
 setupUserName.addEventListener('invalid', function(evt) {
-  var mess = getValidState( evt );
+  var mess = window.utils.getValidyState( evt.target.validity );
   if( mess ) {
     evt.target.setCustomValidity( mess );
   }
 } );
 
 setupUserName.addEventListener('input', function(evt) {
-  var mess  = (evt.target.value.length < 2 ) ? VALIDY_STATE.tooShort : '';
+  var mess  = (evt.target.value.length < 2 ) ? window.utils.getValidyMess('tooShort') : '';
   evt.target.setCustomValidity( mess );
 });
-
-function getValidState(evt) {
-  var validiState = evt.target.validity;
-  for( var state in VALIDY_STATE ) {
-    if ( validiState[state] ) {
-      return VALIDY_STATE[state];
-    }
-  }
-  return false;
-}
-
 
 /**
  * Показ окна Настройки
  */
 function evtShowSetup() {
   setup.classList.remove('hidden');
-  setupUserName.focus();
+  //setupUserName.focus();
   document.addEventListener('keydown', evtCloseSetupEscPress );
   document.addEventListener('keydown', evtFormSubmitEnterPress );
   buttonCloseSetup.addEventListener('click', evtCloseSetup );
@@ -88,90 +59,36 @@ function evtCloseSetup() {
 }
 /* Показ по нажатию ENTER */
 function evtShowSetupEnterPress(evt) {
-  if(evt.keyCode === KEY_ENTER) {
+  if(window.utils.isEnterKeycode(evt)) {
     evt.stopPropagation();
+    evt.preventDefault();
     evtShowSetup();
   }
 }
 /* Закрытие по нажатию ESC */
 function evtCloseSetupEscPress(evt) {
-  if( (evt.keyCode === KEY_ESC  || evt.keyCode === KEY_ENTER )  && evt.target != setupUserName ) {
+  if( (window.utils.isEscKeycode(evt)  || window.utils.isEnterKeycode(evt) )  && evt.target != setupUserName ) {
     evtCloseSetup();
   }
 }
 /* Закрытие по нажатию Enter на кнопке закрыть */
 function evtCloseSetupEnterPress(evt) {
-  if(evt.keyCode === KEY_ENTER) {
+  if(window.utils.isEnterKeycode(evt)) {
     evtCloseSetup();
   }
 }
 
 /* отправка формы по нажатию Enter на кнопке отправить*/
 function evtFormSubmitEnterPress(evt) {
-  if(evt.keyCode === KEY_ENTER) {
+  if(window.utils.isEnterKeycode(evt)) {
     if ( evt.target == setupUserName ) {
-      event.preventDefault();
+      evt.preventDefault();
     }
     else  alert('submit');
   }
 }
 
-// перемещение блока настроек за иконку пользователя в настройках
-var dialogHandler = setup.querySelector('.upload');
-var movingDiv = setup.querySelector('.setup-moving');
-
-dialogHandler.addEventListener('mousedown',onSetupMoving);
-movingDiv.addEventListener('mousedown',onSetupMoving);
-
-function onSetupMoving (evt) {
-  evt.preventDefault();
-  setupUserName.blur();
-
-  var startCoords = {
-    x: evt.clientX,
-    y: evt.clientY
-  };
-
-  var dragged = false;
-
-  var onMouseMove = function (moveEvt) {
-    moveEvt.preventDefault();
-
-    dragged = true;
-
-    var shift = {
-      x: startCoords.x - moveEvt.clientX,
-      y: startCoords.y - moveEvt.clientY
-    }
-
-    startCoords = {
-      x: moveEvt.clientX,
-      y: moveEvt.clientY
-    }
-    setup.style.top = ( setup.offsetTop - shift.y) + 'px';
-    setup.style.left = ( setup.offsetLeft - shift.x) + 'px';
-    movingDiv.style.cursor = 'move';
-  }
-
-  var onMouseUp = function(upEvt) {
-    upEvt.preventDefault();
-    document.removeEventListener('mousemove', onMouseMove);
-    document.removeEventListener('mouseup', onMouseUp);
-    movingDiv.style.cursor = '';
-
-    if (dragged) {
-      var onClickPreventDefault = function(evt) {
-        evt.preventDefault();
-        dialogHandler.removeEventListener('click', onClickPreventDefault);
-      }
-      dialogHandler.addEventListener('click', onClickPreventDefault);
-    }
-  }
-
-  document.addEventListener('mousemove', onMouseMove);
-  document.addEventListener('mouseup', onMouseUp);
-}
-
+// Перенести эти методы внизу
 
 function evtWizardColorChange(evt) {
   var wizardProp = '';
@@ -183,20 +100,24 @@ function evtWizardColorChange(evt) {
   } else if( targetClass.contains("setup-fireball") ) {
     wizardProp = "fireballColor";
   }
-  if( persons[wizardProp] ) {
+  if( window.wizards.getPersonParam(wizardProp) ) {
     changeWizardPropColor(evt, wizardProp);
   }
 }
 
 function changeWizardPropColor(evt, wizardProp) {
   var colorId = (evt.target.dataset.colorId == undefined ) ? 0 : evt.target.dataset.colorId;
+
+  var wizardParams = window.wizards.getPersonParam(wizardProp);
+  if(wizardParams == undefined ) return false;
+
   colorId++;
-  colorId = ( colorId < persons[wizardProp].length ) ? colorId : 0 ;
+  colorId = ( colorId < wizardParams.length ) ? colorId : 0 ;
   evt.target.dataset.colorId = colorId;
   if (wizardProp == "fireballColor") {
-    evt.target.parentNode.style.background = persons[wizardProp][colorId];
+    evt.target.parentNode.style.background = wizardParams[colorId];
   } else {
-    evt.target.style.fill = persons[wizardProp][colorId];
+    evt.target.style.fill = wizardParams[colorId];
   }
   var hiddenInputName;
   switch(wizardProp) {
@@ -211,53 +132,9 @@ function changeWizardPropColor(evt, wizardProp) {
       break;
   }
   if(hiddenInputName) {
-    document.querySelector('input[name="'+hiddenInputName+'"]').value = persons[wizardProp][colorId];
+    document.querySelector('input[name="'+hiddenInputName+'"]').value = wizardParams[colorId];
   }
 
 }
 
-/**
- * Создание списка похожих персонажей
- * @param  int count - количество
- */
-function createWizardList(count) {
-  count = Math.abs(parseInt(count)) | 4;
-  for(var i = 0; i < count; i++) {
-    var person = generatePerson(false);
-    setupSimilarList.appendChild( cloneWizard(person) );
-  }
-  setupSimilar.classList.remove('hidden');
-}
-
-/**
- * Генерирация характеристик/описания персонажа
- * @param  boolean repeat - использовать ли повторно имена.
- * Важно! При repeat == true, кол-во персонажей ограничено размером persons.name и persons.family
- * @return object 
- */
-function generatePerson(repeat) {
-  repeat  = !!repeat;
-  var person = {};
-  for (var prop in persons) {
-    var randomId = Math.floor( Math.random() * persons[prop].length );
-    var randomVal =
-          (!repeat && (prop == 'name' || prop == 'family')) ? persons[prop].splice(randomId,1) : [ persons[prop][randomId] ];
-    person[prop] = randomVal[0];
-  }
-  return person;
-}
-
-/**
- * Клонирование шаблона волшебника по переданному описанию
- * @param  object clone - объект с описанием волшебника
- * @return document fragment
- */
-function cloneWizard(person) {
-  var wizardClone = wizardTemplate.cloneNode(true);
-
-  wizardClone.querySelector('.setup-similar-label').textContent = person.name + ' ' + person.family;
-  wizardClone.querySelector('.wizard-coat').style.fill = person.coatColor;
-  wizardClone.querySelector('.wizard-eyes').style.fill = person.yeysColor;
-
-  return wizardClone;
-}
+})();
