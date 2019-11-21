@@ -32,9 +32,9 @@
     return error;
   }
 
-/**
- * Обертка XMLHttpRequest
- */
+  /**
+  * Обертка XMLHttpRequest
+  */
   function XHRequest(method, url, respType, date, onLoad, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = respType;

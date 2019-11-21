@@ -2,21 +2,58 @@
 
 (function() {
 
-// шаблон для генерации параметров персонажей
-var persons = {
-  name:   ['Дворкин', 'Мелькор', 'Гэндальф',        'Саруман',      'Зеддикус',      'Ричард', 'Кэлен',  'Кара',   'Рейстлин', 'Рам',   'Гассан',     'Джонатан',  'Борис',  'Артур',   'Волан',   'Альбус',   'Гарри', 'Дэвид', 'Антон', 'Алистер'],
-  family: ['Баримен', 'Ба́углир', 'Митрандир Серый', 'Курумо Белый', 'З’ул Зорандер', 'Рал',    'Амнелл', 'Мейсон', 'Маджере',  'Аббал', 'ибн Хоттаб', 'Стрэндж',   'Гессер', 'Завулон', 'де-Морт', 'Дамблдор', 'Поттер', 'Блэйн', 'Гудини', 'Городецкий', 'Кроули', 'Крестная Фея', 'Ведьма Пустоши'],
-  colorCoat: ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'],
-  colorEyes: ['black', 'brown', 'red', 'blue', 'yellow', 'green'],
-  colorFireball: ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848']
-};
-
 window.wizards = {
-  getPersons: function() {
-    return persons;
+  userParams: {
+    colorFireball: '#ee4830',
+    colorEyes: 'black',
+    colorCoat: 'rgb(101, 137, 164)'
   },
-  getPersonParam: function(param) {
-    return (persons[param]) ? persons[param] : undefined;
+  // соответсвие параметров персонажей с именами input формы для хранения данных
+  inputMap: {
+    'colorCoat': "coat-color",
+    'colorEyes': "eyes-color",
+    'colorFireball': "fireball-color"
+  },
+  changeColor(evt) {
+    var wizardProp = '';
+    var targetClass = evt.target.classList;
+    if( targetClass.contains("wizard-coat") ) {
+      wizardProp = "colorCoat";
+    } else if( targetClass.contains("wizard-eyes") ) {
+      wizardProp = "colorEyes";
+    } else if( targetClass.contains("setup-fireball") ) {
+      wizardProp = "colorFireball";
+    }
+
+    if( window.wizardsSimilar.getPersonParam(wizardProp) ) {
+      this.changePropColor(evt, wizardProp);
+    }
+  },
+  //изменение цвета у элемента с указанным классом
+  changePropColor: function (evt, wizardProp) {
+    var colorId = (evt.target.dataset.colorId == undefined ) ? 0 : evt.target.dataset.colorId;
+
+    var wizardParams = window.wizardsSimilar.getPersonParam(wizardProp);
+    if(wizardParams == undefined ) return false;
+
+    colorId++;
+    colorId = ( colorId < wizardParams.length ) ? colorId : 0 ;
+    evt.target.dataset.colorId = colorId;
+    if (wizardProp == "colorFireball") {
+      evt.target.parentNode.style.background = wizardParams[colorId];
+    } else {
+      evt.target.style.fill = wizardParams[colorId];
+    }
+
+    //применяем изменения
+    var inputName = this.inputMap[wizardProp];
+    document.querySelector('input[name="'+ inputName +'"]').value = wizardParams[colorId];
+
+    //сохраняем текущие параметры пользователя
+    this.userParams[wizardProp] = wizardParams[colorId];
+
+    // обновляем список похожих
+    window.debounce( window.wizardsSimilar.update );
   }
 }
 

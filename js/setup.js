@@ -72,6 +72,15 @@ function evtCloseSetup() {
   setupWizard.removeEventListener('click', evtWizardColorChange );
   setupFireball.removeEventListener('click', evtWizardColorChange );
 }
+
+/**
+ * Изменение цвета на активных элементах волшебника или посохе
+ * Обертка для избежания потери контекста this при вызове из колбека
+*/
+function evtWizardColorChange(evt) {
+  window.wizards.changeColor(evt);
+}
+
 /* Показ по нажатию ENTER */
 function evtShowSetupEnterPress(evt) {
   if(window.utils.isEnterKeycode(evt)) {
@@ -100,55 +109,6 @@ function evtFormSubmitEnterPress(evt) {
       evt.preventDefault();
     }
   }
-}
-
-// Перенести эти методы внизу
-
-function evtWizardColorChange(evt) {
-  var wizardProp = '';
-  var targetClass = evt.target.classList;
-  if( targetClass.contains("wizard-coat") ) {
-    wizardProp = "colorCoat";
-  } else if( targetClass.contains("wizard-eyes") ) {
-    wizardProp = "colorEyes";
-  } else if( targetClass.contains("setup-fireball") ) {
-    wizardProp = "colorFireball";
-  }
-  if( window.wizards.getPersonParam(wizardProp) ) {
-    changeWizardPropColor(evt, wizardProp);
-  }
-}
-
-function changeWizardPropColor(evt, wizardProp) {
-  var colorId = (evt.target.dataset.colorId == undefined ) ? 0 : evt.target.dataset.colorId;
-
-  var wizardParams = window.wizards.getPersonParam(wizardProp);
-  if(wizardParams == undefined ) return false;
-
-  colorId++;
-  colorId = ( colorId < wizardParams.length ) ? colorId : 0 ;
-  evt.target.dataset.colorId = colorId;
-  if (wizardProp == "colorFireball") {
-    evt.target.parentNode.style.background = wizardParams[colorId];
-  } else {
-    evt.target.style.fill = wizardParams[colorId];
-  }
-  var hiddenInputName;
-  switch(wizardProp) {
-    case 'colorCoat':
-      hiddenInputName = "coat-color";
-      break;
-    case 'colorEyes':
-      hiddenInputName = "eyes-color";
-      break;
-    case 'colorFireball':
-      hiddenInputName = "fireball-color";
-      break;
-  }
-  if(hiddenInputName) {
-    document.querySelector('input[name="'+hiddenInputName+'"]').value = wizardParams[colorId];
-  }
-
 }
 
 })();
