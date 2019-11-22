@@ -952,6 +952,16 @@ input[type=radio]:checked + .review-mark-label {
   color: #090c47;
 
   background: #b7d6f1;
-  box-shadow: 0px 0px 0px 5px #76b5ea;
+  box-shadow: 0px 0px 0px 5px #C1DDF5;
   cursor: pointer;
+}
+
+.raining {
+  position: absolute;
+  margin: 0 auto;
+  top: 333px;
+  left: calc(50% - 446px);
+  width: 244px;
+  height: 295px;
+  overflow: hidden;
 }
