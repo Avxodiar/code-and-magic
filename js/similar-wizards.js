@@ -161,7 +161,7 @@ function cloneWizard(person) {
 */
 function getWizardRaiting(wizard) {
   var rait = 0;
-  var pattern = window.wizards.userParams;
+  var pattern = window.wizard.userParams;
   for(var key in pattern) {
     if (wizard[key] == pattern[key]) {
       switch(key) {

@@ -779,7 +779,7 @@ input[type=radio]:checked + .review-mark-label {
   margin: 5px;
 
   color: #fff;
-
+  text-align: center;
 }
 
 .setup-similar-content {
@@ -864,6 +864,7 @@ input[type=radio]:checked + .review-mark-label {
 
 .upload {
   position: relative;
+  top: 10px;
 
   display: inline-block;
 
@@ -881,18 +882,60 @@ input[type=radio]:checked + .review-mark-label {
 
   position: absolute;
   left: 0;
-  top: 10px;
+}
+.upload .setup-user-pic + label {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: block;
+  border-radius: 100%;
 }
 
-.upload input {
-  position: absolute;
-  z-index: 0;
-  opacity: 0;
-  width:100%;
-  height:100%;
+.upload .setup-user-pic + label:hover {
+  box-shadow: 0px 0px 4px 2px rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+}
 
-  left: 0;
-  top: 0;
+#file-avatar {
+  display: none;
+}
+
+.upload + label {
+  display: inline-block;
+}
+
+.wizard-talk {
+  position: absolute;
+  top: 130px;
+  left: 270px;
+
+  box-sizing: border-box;
+  padding: 7px;
+  z-index: 1;
+
+  min-width: 50px;
+  max-width: 200px;
+
+  font-size: 16px;
+  color: #673AB7;;
+  text-align: center;
+
+  background: #bdc8f1;
+  box-shadow: 0px 0px 0px 5px #7b91e3;
+}
+
+.talk-animation {
+  animation: wizard-talk-hide 3s 1;
+  animation-delay: 5s;
+  animation-fill-mode: forwards;
+}
+@keyframes wizard-talk-hide {
+  0% {
+    opacity:1;
+  }
+  100% {
+    opacity:0;
+  }
 }
 
 #setup-error {

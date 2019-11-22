@@ -22,6 +22,7 @@ function onSetupMoving (evt) {
     x: evt.clientX,
     y: evt.clientY
   };
+  var debounceCoords = Object.assign({}, startCoords);
 
   // флаг переноса - событие привязно к 2ум элементам из которых 1 активный (input)
   var dragged = false;
@@ -53,7 +54,14 @@ function onSetupMoving (evt) {
     document.removeEventListener('mouseup', onMouseUp);
     movingDiv.style.cursor = '';
 
-    if (dragged) {
+    // проверка на микродвижение мышью до 2px по обоим осям
+    var shift = {
+      x: Math.abs(startCoords.x - debounceCoords.x),
+      y: Math.abs(startCoords.y - debounceCoords.y),
+    }
+    var debounceShift = ((shift.x + shift.y) > 2);
+
+    if (dragged && debounceShift) {
       var onClickPreventDefault = function(evt) {
         evt.preventDefault();
         dialogHandler.removeEventListener('click', onClickPreventDefault);

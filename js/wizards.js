@@ -2,7 +2,10 @@
 
 (function() {
 
-window.wizards = {
+var setupPlayer = document.querySelector('.setup-player');
+var wizardTalk = setupPlayer.querySelector('.wizard-talk');
+
+window.wizard = {
   userParams: {
     colorFireball: '#ee4830',
     colorEyes: 'black',
@@ -54,6 +57,12 @@ window.wizards = {
 
     // обновляем список похожих
     window.debounce( window.wizardsSimilar.update );
+  },
+  // Вывод сообщений и ошибок
+  say: function (message) {
+    wizardTalk.textContent = message;
+    wizardTalk.classList.remove('hidden');
+    setupPlayer.replaceChild(wizardTalk, wizardTalk);
   }
 }
 

@@ -55,7 +55,7 @@ setupForm.addEventListener('submit', function(evt) {
  */
 function evtShowSetup() {
   setup.classList.remove('hidden');
-  //setupUserName.focus();
+  window.wizard.say('Кликните по плащу, глазам или фаерболу чтобы изменить цвет');
   document.addEventListener('keydown', evtCloseSetupEscPress );
   document.addEventListener('keydown', evtFormSubmitEnterPress );
   buttonCloseSetup.addEventListener('click', evtCloseSetup );
@@ -78,7 +78,7 @@ function evtCloseSetup() {
  * Обертка для избежания потери контекста this при вызове из колбека
 */
 function evtWizardColorChange(evt) {
-  window.wizards.changeColor(evt);
+  window.wizard.changeColor(evt);
 }
 
 /* Показ по нажатию ENTER */
