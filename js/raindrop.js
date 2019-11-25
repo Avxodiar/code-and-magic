@@ -7,7 +7,7 @@ var RainSize = {
   WIDTH: 244,
   HEIGHT: 295,
   DROP_COUNT: 200,
-  DROP_COLOR: '#76B5EA'
+  DROP_COLOR: '#99C8EF'
 };
 
 var Raindrop = function() {

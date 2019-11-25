@@ -460,7 +460,7 @@ window.Game = (function () {
           message = 'Игра на паузе!\nНажмите Пробел, чтобы продолжить';
           break;
         case Verdict.INTRO:
-          message = 'Добро пожаловать!\nНажмите Пробел для начала игры';
+          message = 'Добро пожаловать!\nНажмите Пробел для начала игры\nШифт - для запуска фаербола';
           break;
       }
 
@@ -518,10 +518,10 @@ window.Game = (function () {
       };
 
       ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-      drawCloud(190, 40, 320, 100);
+      drawCloud(190, 55, 320, 100);
 
       ctx.fillStyle = 'rgba(256, 256, 256, 1.0)';
-      drawCloud(180, 30, 320, 100);
+      drawCloud(180, 45, 320, 100);
 
       ctx.fillStyle = '#000';
       ctx.font = '16px PT Mono';
