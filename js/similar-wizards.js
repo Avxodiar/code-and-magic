@@ -39,9 +39,8 @@ window.backend.load(
     createSimilarWizards();
   },
   function(errorMessage) {
-    showError('Ошибка загрузки персонажей с сервера: '+ errorMessage);
     createSimilarWizards();
-    console.warn('Сгенерированы похожие персонажи для демонстрации');
+    showError('Ошибка загрузки персонажей с сервера: '+ errorMessage + '\n\nСгенерированы похожие персонажи для демонстрации');
   }
 );
 
@@ -73,11 +72,11 @@ window.wizardsSimilar = {
  * @return {[type]} [description]
  */
 function checkWizards() {
-  if(typeof loadedWizards != 'object') {
+  if(typeof loadedWizards != 'object' || loadedWizards.length == undefined) {
     loadedWizards = [];
-  }
-  while(loadedWizards.length < COUNT_SIMILAR) {
-    loadedWizards.push( generatePerson() );
+    while(loadedWizards.length < COUNT_SIMILAR) {
+      loadedWizards.push( generatePerson() );
+    }
   }
 }
 

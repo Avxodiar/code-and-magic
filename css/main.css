@@ -547,6 +547,7 @@ input[type=radio]:checked + .review-mark-label {
   width: 250px;
   margin: 0 auto;
   padding-top: 50px;
+  cursor: pointer;
 }
 
 .footer-link:hover {
@@ -559,6 +560,32 @@ input[type=radio]:checked + .review-mark-label {
   left: 50%;
 
   transform: translateX(-50%);
+  animation: annoying 4s ease-in infinite alternate;
+}
+@keyframes annoying{
+  from{
+   opacity: 1;
+  }
+  to{
+    opacity: 0;
+  }
+}
+
+.footer-link:hover img{
+  display: none;
+}
+.footer-link:hover:before{
+  content: "avxodiar@gmail";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  color: #020100;
+  line-height: 44px;
+  font-size: 20px;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-shadow: 0 0 5px white;
 }
 
 .setup {
